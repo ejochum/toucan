@@ -38,7 +38,7 @@ def ws_connect(message):
 @channel_session_user
 def ws_disconnect(message):
     for group_name in message.channel_session.get('groups', []):
-        Group(group_name).discard(message.reply_channels)
+        Group(group_name).discard(message.reply_channel)
 
 
 class SiteNotifications(WebsocketConsumer):
