@@ -2,16 +2,29 @@ import React, {PropTypes} from 'react'
 import { connect } from 'react-redux'
 import UI from '../components/main'
 import getFilteredIssues from '../issueSelector'
+import ReconnectingWebSocket from 'reconnectingwebsocket';
 
 import { selectIssue, fetchIssues, setCoordinates,
-         resetCoordinates, loadCurrentUserInformation } from '../actions'
+         resetCoordinates, loadCurrentUserInformation,
+         receiveMessage } from '../actions'
 
 
 class IssueTrackerApp extends React.Component {
 
   componentDidMount() {
     this.props.loadCurrentUserInformation()
-    this.props.fetchIssues()
+    this.props.fetchIssues();
+    this.ws = this.connectWS();
+    this.ws.onmessage = (e) => { this.props.receiveWSMessage(e.data) };
+  }
+
+  connectWS() {
+    let ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    let ws_path = ws_scheme + '://' + window.location.host;
+    let ws = new ReconnectingWebSocket(ws_path);
+    ws.onopen = function() { console.log("Connected to notification socket"); }
+    ws.onclose = function() { console.log("Disconnected from notification socket"); }
+    return ws;
   }
 
   render() {
@@ -26,6 +39,7 @@ IssueTrackerApp.propType = {
   coordinates: PropTypes.object,
   loadCurrentUserInformation: PropTypes.func.isRequired,
   bounds: PropTypes.array.isRequired,
+  receiveWSMessage: PropTypes.func.isRequired,
   // Injected by React Router
   children: PropTypes.node
 }
@@ -57,6 +71,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     loadCurrentUserInformation: () => {
       dispatch(loadCurrentUserInformation())
+    },
+    receiveWSMessage: (data) => {
+      console.log('receiveWSMessage called', data);
+      dispatch(receiveMessage(data));
     }
   };
 }

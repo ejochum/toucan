@@ -50,7 +50,6 @@ export class CommentForm extends React.Component {
       },
       toggleState: this.state.toggleState
     }
-    console.log(comment);
     this.props.onComment(comment);
     this.resetEditorState();
   }

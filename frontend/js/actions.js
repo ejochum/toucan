@@ -180,7 +180,7 @@ export function loadCurrentUserInformation() {
 export function changeIssueStatus(issue_id, status) {
   return (dispatch, getState) => {
     let url = `/api/issue/${issue_id}/status/`
-    let data = {status: status};
+    let data = {staitus: status};
     jsonPost(url, data).then((response) => {
       return dispatch(fetchIssueIfNeeded(issue_id));
     })
@@ -193,4 +193,13 @@ export function closeIssue(issue_id) {
 
 export function openIssue(issue_id) {
   return changeIssueStatus(issue_id, 'open');
+}
+
+export function receiveMessage(data) {
+  let payload = JSON.parse(data)
+  console.log(payload);
+  return {
+    type: 'MESSAGE_RECEIVED',
+    payload
+  }
 }
