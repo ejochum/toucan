@@ -17,6 +17,7 @@ import {
 
 import {defaultMapBounds} from './globals'
 import uniq from 'lodash/uniq'
+import isEmpty from 'lodash/isEmpty'
 
 function issues(state=[], action) {
   switch (action.type) {
@@ -28,17 +29,17 @@ function issues(state=[], action) {
         }
       })
     case RECEIVE_ISSUE:
-      // update the issues array with the properties from the issue details
-      let index = state.findIndex((i)=> { return i.id === action.issue_id; })
-      if (index != -1) {
-        let issue =  {
-          ...state[index],
-          ...action.payload.properties
+    case INVALIDATE_ISSUE:
+      if (!isEmpty(action.payload) && action.issue_id) {
+        // update the issues array with the properties from the issue details
+        let index = state.findIndex((i)=> { return i.id === action.issue_id; })
+        if (index != -1) {
+          let issue =  {
+            ...state[index],
+            ...action.payload.properties
+          }
+          return [].concat(...state.slice(0, index), issue, ...state.slice(index+1));
         }
-        return [].concat(...state.slice(0, index), issue, ...state.slice(index+1));
-      }
-      else {
-        return state;
       }
     default:
       return state

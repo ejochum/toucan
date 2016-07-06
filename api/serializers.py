@@ -129,17 +129,20 @@ class StatusSerializer(serializers.ModelSerializer):
 
 class IssueSerializer(GeoFeatureModelSerializer):
 
-    issue_url = serializers.HyperlinkedIdentityField(
-        view_name='issue_tracker_api:issue_detail',
-        lookup_url_kwarg='issue_id',
-        lookup_field='pk'
-    )
+    # issue_url = serializers.HyperlinkedIdentityField(
+    #     view_name='issue_tracker_api:issue_detail',
+    #     lookup_url_kwarg='issue_id',
+    #     lookup_field='pk'
+    # )
 
     issue_type = IssueTypeSerializer(read_only=True)
 
-    comment_count = serializers.IntegerField(read_only=True)
+    comment_count = serializers.SerializerMethodField()
 
     organisation = OrganisationSerializer()
+
+    def get_comment_count(self, issue):
+        return getattr(issue, 'comment_count', issue.comments.count())
 
     class Meta:
         model = Issue
@@ -154,7 +157,7 @@ class IssueSerializer(GeoFeatureModelSerializer):
             'status',
             'created',
             # defined fields
-            'issue_url',
+            # 'issue_url',
             'issue_type',
             'comment_count',
             'organisation',

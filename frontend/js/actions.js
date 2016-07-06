@@ -91,10 +91,11 @@ export function receiveIssue(issue_id, json) {
     }
 }
 
-export function invalidateIssue(issue_id) {
+export function invalidateIssue(issue_id, data={}) {
     return {
         type: INVALIDATE_ISSUE,
-        issue_id
+        issue_id,
+        payload: data
     }
 }
 
@@ -152,10 +153,10 @@ export function postComment(issue_id, comment) {
       toggleState: comment.toggleState || false
     }
 
-    jsonPost(url, data)
-      .then(
-        response => dispatch(invalidateIssue(issue_id))
-      )
+    jsonPost(url, data);
+      // .then(
+      //   response => dispatch(invalidateIssue(issue_id))
+      // )
   }
 }
 
@@ -175,31 +176,8 @@ export function loadCurrentUserInformation() {
   }
 }
 
-
-// these are currently not used
-export function changeIssueStatus(issue_id, status) {
-  return (dispatch, getState) => {
-    let url = `/api/issue/${issue_id}/status/`
-    let data = {staitus: status};
-    jsonPost(url, data).then((response) => {
-      return dispatch(fetchIssueIfNeeded(issue_id));
-    })
-  }
-}
-
-export function closeIssue(issue_id) {
-  return changeIssueStatus(issue_id, 'closed')
-}
-
-export function openIssue(issue_id) {
-  return changeIssueStatus(issue_id, 'open');
-}
-
-export function receiveMessage(data) {
-  let payload = JSON.parse(data)
-  console.log(payload);
-  return {
-    type: 'MESSAGE_RECEIVED',
-    payload
-  }
+export function receiveMessage(msg) {
+  // Server sent actions!
+  let data = JSON.parse(msg);
+  return data;
 }
