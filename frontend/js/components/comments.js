@@ -8,6 +8,7 @@ import isEmpty from 'lodash/isEmpty'
 import { fromJS } from 'immutable'
 import CommentView from './commentView'
 import UserLink from './userLink'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 
 export class CommentForm extends React.Component {
@@ -169,7 +170,12 @@ export class CommentList extends React.Component {
       }
       return null;
     });
-    return (<div>{items}</div>);
+
+    return (
+      <ReactCSSTransitionGroup transitionName="comment" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+        {items}
+      </ReactCSSTransitionGroup>
+    );
   }
 
 }

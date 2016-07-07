@@ -79,32 +79,43 @@ IssueFilter.propType = {
 }
 
 
+function IssueRow(props) {
+  let issue = props.issue;
+
+  return (
+      <tr onClick={props.navigate}>
+        <td>
+          { issue.issue_type ? <Icon name={getIconClassForIssueType(issue.issue_type)} title={issue.issue_type.name} /> : null }
+        </td>
+        <td>
+            <a href='#'>
+              {issue.title}
+            </a>
+            <br />
+            <small>{issue.organisation !== null ? issue.organisation.name : null}</small>
+        </td>
+        <td>
+            <CommentCount count={issue.comment_count} />
+        </td>
+        <td>
+          <Status status={issue.status} />
+        </td>
+      </tr>);
+};
+
+
 class IssueListUI extends React.Component {
 
     render() {
-        let issues = this.props.issues || [];
 
-        let rows = issues.map((issue, index) => {
-            return (
-              <tr key={issue.id} onClick={(e) => {e.preventDefault(); this.props.handleIssueChange(issue)}}>
-                <td>
-                  { issue.issue_type ? <Icon name={getIconClassForIssueType(issue.issue_type)} title={issue.issue_type.name} /> : null }
-                </td>
-                <td>
-                    <a href='#'>
-                      {issue.title}
-                    </a>
-                    <br />
-                    <small>{issue.organisation !== null ? issue.organisation.name : null}</small>
-                </td>
-                <td>
-                    <CommentCount count={issue.comment_count} />
-                </td>
-                <td>
-                  <Status status={issue.status} />
-                </td>
-              </tr>);
-        });
+        let issues = this.props.issues || [];
+        let rows = issues.map(issue => { return (
+          <IssueRow issue={issue}
+                    navigate={(e) => {e.preventDefault(); this.props.handleIssueChange(issue)}}
+                    key={issue.id}
+          />
+        )});
+
         return (
           <div>
             <div className="issue-list-form">

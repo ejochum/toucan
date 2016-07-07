@@ -83,6 +83,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "immutable": "^3.8.1",
     "jquery": "^2.2.3",
+    "react-addons-css-transition-group": "^15.2.0",
     "react-custom-scrollbars": "^4.0.0-beta.1",
     "react-redux": "^4.4.2",
     "react-router-redux": "^4.0.2",
