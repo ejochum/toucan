@@ -79,30 +79,47 @@ IssueFilter.propType = {
 }
 
 
-function IssueRow(props) {
-  let issue = props.issue;
+class IssueListItem extends React.Component {
 
-  return (
-      <tr onClick={props.navigate}>
-        <td>
-          { issue.issue_type ? <Icon name={getIconClassForIssueType(issue.issue_type)} title={issue.issue_type.name} /> : null }
-        </td>
-        <td>
-            <a href='#'>
-              {issue.title}
-            </a>
-            <br />
-            <small>{issue.organisation !== null ? issue.organisation.name : null}</small>
-        </td>
-        <td>
-            <CommentCount count={issue.comment_count} />
-        </td>
-        <td>
-          <Status status={issue.status} />
-        </td>
-      </tr>);
-};
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
 
+  handleClick (e) {
+    e.preventDefault();
+    this.props.navigateToIssue(this.props.issue);
+  }
+
+  render () {
+    let { issue } = this.props;
+
+    return (
+        <tr onClick={this.handleClick}>
+          <td>
+            { issue.issue_type ? <Icon name={getIconClassForIssueType(issue.issue_type)} title={issue.issue_type.name} /> : null }
+          </td>
+          <td>
+              <a href='#'>
+                {issue.title}
+              </a>
+              <br />
+              <small>{issue.organisation !== null ? issue.organisation.name : null}</small>
+          </td>
+          <td>
+              <CommentCount count={issue.comment_count} />
+          </td>
+          <td>
+            <Status status={issue.status} />
+          </td>
+        </tr>);
+  };
+}
+
+IssueListItem.propType = {
+  navigateToIssue: PropTypes.func.isRequired,
+  issue: PropTypes.object.isRequired
+}
 
 class IssueListUI extends React.Component {
 
@@ -110,8 +127,8 @@ class IssueListUI extends React.Component {
 
         let issues = this.props.issues || [];
         let rows = issues.map(issue => { return (
-          <IssueRow issue={issue}
-                    navigate={(e) => {e.preventDefault(); this.props.handleIssueChange(issue)}}
+          <IssueListItem issue={issue}
+                    navigateToIssue={this.props.handleIssueChange}
                     key={issue.id}
           />
         )});
