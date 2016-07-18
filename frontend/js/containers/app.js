@@ -73,7 +73,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(loadCurrentUserInformation())
     },
     receiveWSMessage: (data) => {
-      console.log('receiveWSMessage called', data);
       dispatch(receiveMessage(data));
     }
   };

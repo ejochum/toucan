@@ -39,6 +39,12 @@ function issues(state=[], action) {
             ...action.payload.properties
           }
           return [].concat(...state.slice(0, index), issue, ...state.slice(index+1));
+        } else {
+          let newIssue = {
+            id: action.payload.id,
+            ...action.payload.properties
+          }
+          return [...state, newIssue]
         }
       }
     default:

@@ -1,4 +1,4 @@
-from .models import IssueStatus, IssueComment
+from .models import IssueStatus, IssueComment, Issue
 from django.db.models.signals import post_save
 
 from .actions import issue_updated
@@ -18,3 +18,9 @@ def comment_posted(**kwargs):
 
 post_save.connect(comment_posted, sender=IssueComment)
 
+
+def issue_crud(**kwargs):
+    issue = kwargs['instance']
+    issue_updated(issue)
+
+post_save.connect(issue_crud, sender=Issue)
