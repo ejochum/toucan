@@ -83,15 +83,16 @@ class IssueDetailMain extends React.Component {
 
 class IssueDetailFooter extends React.Component {
   render() {
-    let {openMap} = this.props;
+    let {openMap, issueID} = this.props;
     return <footer className="bg-primary">
             <Link to='/' className="btn btn-primary">
               <Icon name="list"/>&nbsp;Issue List
             </Link>
-          <button onClick={openMap} className="btn btn-primary pull-right">
-                Location&nbsp;
+          <Link className="btn btn-primary pull-right"
+                to={{pathname:`/issue/${issueID}`, state:{map: true}}}>
+                Show on Map&nbsp;
                 <Icon name="map-o"/>
-          </button>
+          </Link>
     </footer>;
   }
 }
@@ -143,7 +144,7 @@ class IssueDetailUI extends React.Component {
              }
         </div>
         <HiddenMedium>
-          <IssueDetailFooter openMap={this.props.openMap} />
+          <IssueDetailFooter openMap={this.props.openMap} issueID={gjs.id} />
         </HiddenMedium>
     </div>);
   }

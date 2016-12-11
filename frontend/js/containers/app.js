@@ -4,7 +4,7 @@ import UI from '../components/main'
 import getFilteredIssues from '../issueSelector'
 
 import { selectIssue, fetchIssues, setCoordinates,
-         resetCoordinates, loadCurrentUserInformation } from '../actions'
+         resetCoordinates, loadCurrentUserInformation, bboxUpdated } from '../actions'
 
 
 class IssueTrackerApp extends React.Component {
@@ -57,6 +57,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     loadCurrentUserInformation: () => {
       dispatch(loadCurrentUserInformation())
+    },
+    bboxUpdated: (bounds) => {
+      dispatch(bboxUpdated(bounds))
     }
   };
 }

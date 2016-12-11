@@ -5,6 +5,7 @@ import MediaQuery from 'react-responsive'
 import Icon from 'react-fa'
 import {mediumSize} from './responsive'
 import urls from '../urls'
+import {Link} from 'react-router'
 
 require('../../css/app.css');
 
@@ -12,13 +13,14 @@ function WrapMap(props) {
     let { closable, onClose } = props;
     // construct the map
     let map = <Map geojson={props.geojson}
-                   bounds={props.bounds}
                    visibleIssueIDs={props.issues.map(i => i.id)}
                    setCoordinates={props.setCoordinates}
                    coordinates={props.coordinates}
                    selectIssue={props.selectIssue}
                    selectedIssue={props.selectedIssue}
                    beforeMarkerNavigation={props.onMapNavigate}
+                   bounds={props.bounds}
+                   bboxUpdated={props.bboxUpdated}
                 />;
 
     return  <div className="map-container">
@@ -27,10 +29,18 @@ function WrapMap(props) {
             <footer className="toucan-controls bg-primary">
                 {
                     !props.coordinates ?
-                        <div className="btn btn-primary text-center" onClick={onClose}>
+                        <Link className="btn btn-primary text-center"
+                              to={
+                                  {
+                                      pathname: '/',
+                                      state: {
+                                          map:false
+                                      }
+                                  }
+                              }>
                             <Icon name="times" />&nbsp;
                             Close Map
-                        </div> :
+                        </Link> :
                         <div className="btn btn-primary text-center" onClick={props.clearCoordinates}>
                             <Icon name="times" />&nbsp;
                             Clear Selection
@@ -66,7 +76,6 @@ class UI extends React.Component {
     }
 
     onMapNavigate = (issue) => {
-        console.log('Map navigation called...', issue);
         // this is called before the user clicks a marker on the map
         this.setState({
             displayMap: false
@@ -74,17 +83,20 @@ class UI extends React.Component {
     }
 
     render() {
+        // unwrap the querystring from location
+        let {location : {state}} = this.props;
+        let showMapState = state && state.map;
+        // decide to show map or detail/list or both
+        // default: display both
+        let displayIssues = true,
+            displayMap = true;
 
         return (<MediaQuery maxWidth={992}>
                 {(isMobile) => {
-                    // default: display both
-                    let displayMap = true,
-                        displayIssues = true;
-
                     // on mobile display one or the other,
                     // depending on state
                     if (isMobile) {
-                        if (this.state.displayMap) {
+                        if (showMapState) {
                             displayIssues = false;
                         } else {
                             displayMap = false;

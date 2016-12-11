@@ -12,7 +12,8 @@ import {
   RECEIVE_COMMENTS,
   ADD_ISSUES_FILTER,
   REMOVE_ISSUES_FILTER,
-  FETCH_CURRENT_USER_DATA
+  FETCH_CURRENT_USER_DATA,
+  BBOX_UPDATED
  } from './actions';
 
 import {defaultMapBounds} from './globals'
@@ -305,6 +306,11 @@ function currentUser(
   switch (action.type) {
     case FETCH_CURRENT_USER_DATA:
       return action.payload;
+    case BBOX_UPDATED:
+      return {
+        ...state,
+        bbox: action.payload
+      }
     default:
       return state;
   }

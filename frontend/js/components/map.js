@@ -1,6 +1,7 @@
 import React, { PropTypes} from 'react';
 import ReactDOM from 'react-dom'
 import isEmpty from 'lodash/isEmpty'
+import debounce from 'lodash/debounce'
 import {dispatch} from 'redux'
 import  Leaflet  from 'leaflet';
 import { Map, MapControl, TileLayer, LayerGroup, GeoJson, Marker, Popup } from 'react-leaflet';
@@ -94,12 +95,22 @@ export class LeafletMap extends React.Component {
         }
 
         // bind event handlers
+        this.getMap = this.getMap.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        this.handleMove = this.handleMove.bind(this);
         this.handleRightClick = this.handleRightClick.bind(this);
         this.handleAddMarkerPositionChange = this.handleAddMarkerPositionChange.bind(this);
         this.handleLocate = this.handleLocate.bind(this);
         this.handleLocationFound = this.handleLocationFound.bind(this);
+        this.handleMove = debounce(
+            this.handleMove.bind(this),
+            1000
+        );
+
+    }
+
+    getMap() {
+        console.log(this);
+        return this._map.leafletElement;
     }
 
     // these functions deal with setting Coordinates
@@ -111,13 +122,13 @@ export class LeafletMap extends React.Component {
       this.props.setCoordinates({...e.latlng});
     }
 
-    getMap() {
-        return this._map.leafletElement;
-    }
-
     handlePopupClose(e) {}
     handleClick(e) {}
-    handleMove(e) {}
+
+    handleMove(e) {
+        let map = e.target;
+        this.props.bboxUpdated(map.getBounds());
+    }
 
     handleLocate() {
       this.getMap().locate();
@@ -179,8 +190,7 @@ export class LeafletMap extends React.Component {
           this._panToUserLocation = false;
           center = this.state.center;
         }
-
-        let bounds = this.props.bounds || this._computeBounds(geojson);
+        let bounds = !center ? this._computeBounds(geojson) : null;
 
         return (
             <Map center={center}
@@ -232,9 +242,10 @@ LeafletMap.propTypes = {
         PropTypes.object,
         PropTypes.bool
     ]),
-    setCoordinates: PropTypes.func,
+    setCoordinates: PropTypes.func.isRequired,
     selectIssue: PropTypes.func.isRequired,
-    selectedIssue: PropTypes.number
+    selectedIssue: PropTypes.number,
+    bboxUpdated: PropTypes.func.isRequired
 }
 
 export default LeafletMap

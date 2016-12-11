@@ -3,6 +3,7 @@ import Icon from 'react-fa'
 import classNames from 'classnames'
 import Status from './status'
 import getIconClassForIssueType from './icons/issueType'
+import {Link} from 'react-router'
 
 function CommentCount({count}) {
     return (<span className={classNames({'text-muted': count === 0})}>
@@ -85,9 +86,15 @@ IssueFilter.propTypes = {
 class IssueListFooter extends React.Component {
     render() {
         return <footer className="issue-list-footer">
-            <div className="btn btn-primary btn-block" onClick={this.props.openMap}>
+            <Link className="btn btn-primary btn-block" to={
+                {   pathname: '/',
+                    state: {
+                        map: true
+                    }
+                }
+            }>
                 <Icon name="map"/>&nbsp;Show Map
-            </div>
+            </Link>
         </footer>
     }
 }

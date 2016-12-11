@@ -23,7 +23,7 @@ export const REMOVE_ISSUES_FILTER = 'REMOVE_ISSUES_FILTER'
 
 
 export const FETCH_CURRENT_USER_DATA = 'FETCH_CURRENT_USER_DATA'
-
+export const BBOX_UPDATED = 'BBOX_UPDATED'
 
 
 export function requestIssues() {
@@ -194,4 +194,12 @@ export function closeIssue(issue_id) {
 
 export function openIssue(issue_id) {
   return changeIssueStatus(issue_id, 'open');
+}
+
+export function bboxUpdated(bbox) {
+    console.log(bbox);
+    return {
+        type: BBOX_UPDATED,
+        payload: bbox
+    }
 }

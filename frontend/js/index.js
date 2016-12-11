@@ -48,7 +48,7 @@ export const history = syncHistoryWithStore(bHistory, store);
 render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={App} name='issueList' >
+      <Route path="/" component={App} name='issueList'>
         <IndexRoute component={IssueList} name='issueListIndex'/>
         <Route path="issue/:IssueID" component={IssueDetail} name='issueDetail'/>
         <Route path="users/:username" component={UserDetail} name='userDetail' />
