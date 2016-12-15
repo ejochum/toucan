@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react'
 import Icon from 'react-fa'
 import classNames from 'classnames'
+
 import Status from './status'
 import getIconClassForIssueType from './icons/issueType'
+import Pin from './pin'
 
 function CommentCount({count}) {
     return (<span className={classNames({'text-muted': count === 0})}>
@@ -106,6 +108,9 @@ class IssueListUI extends React.Component {
                 <td>
                     <CommentCount count={issue.comment_count} />
                 </td>
+                <td>
+                    <Pin />
+                </td>
               </tr>);
         });
         return (
@@ -113,20 +118,31 @@ class IssueListUI extends React.Component {
             <div className="issue-list-form">
                 <IssueFilter {...this.props} filterOptions={this.props.filterOptions}/>
             </div>
-            <hr />
-            <table className="issues table table-hover table-striped">
-            <thead>
-                <tr>
-                    <th>Issue</th>
-                    <th>Status</th>
-                    <th>Type(s)</th>
-                    <th>Discussion</th>
-                </tr>
-            </thead>
-            <tbody>
-                {rows}
-            </tbody>
-        </table>
+
+            {/* the actual table of issues */}
+            <div className="issue-list-body">
+                <table className="issues table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Issue</th>
+                        <th>Status</th>
+                        <th>Type(s)</th>
+                        <th>Discussion</th>
+                        <th />
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows}
+                </tbody>
+                </table>
+            </div>
+
+            {/*issue list control*/}
+            {
+                this.props.mapOpenable ?
+                <IssueListFooter openMap={this.props.openMap}/>
+                : null
+            }
       </div>);
     }
 }

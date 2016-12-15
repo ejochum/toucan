@@ -10,7 +10,7 @@
     "build": "NODE_ENV=production npm run webpack",
     "build-dev": "NODE_ENV=development npm run webpack",
     "dev": "NODE_ENV=development npm run babel -- ./node_modules/.bin/webpack --progress --watch",
-    "hmr": "NODE_ENV=development BABEL_ENV=hmr npm run babel -- ./node_modules/.bin/webpack-dev-server --hot"
+    "hmr": "NODE_ENV=development BABEL_ENV=hmr npm run babel -- ./node_modules/.bin/webpack-dev-server --host 0.0.0.0 --hot"
   },
   "author": "Sean Mc Allister",
   "license": "ISC",
@@ -26,7 +26,7 @@
     "babel-preset-stage-2": "^6.5.0",
     "bootstrap-loader": "^1.0.10",
     "bootstrap-sass": "^3.3.6",
-    "classnames": "^2.2.4",
+    "classnames": "^2.2.5",
     "commonmark": "^0.24.0",
     "commonmark-react-renderer": "^4.1.2",
     "css-loader": "^0.23.1",
@@ -70,7 +70,7 @@
     "style-loader": "^0.13.1",
     "twitter-text": "^1.13.4",
     "url-loader": "^0.5.7",
-    "webpack": "^2.1.0-beta.13",
+    "webpack": "2.2.0-rc.0",
     "webpack-bundle-tracker": "0.0.93",
     "webpack-cleanup-plugin": "^0.2.0",
     "webpack-dev-server": "^2.0.0-beta",
