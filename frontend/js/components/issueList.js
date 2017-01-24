@@ -2,11 +2,10 @@ import React, { PropTypes } from 'react'
 import Icon from 'react-fa'
 import classNames from 'classnames'
 import { ScrollContainer } from 'react-router-scroll';
-
 import Status from './status'
 import getIconClassForIssueType from './icons/issueType'
 import {DateOnlyDisplay, DateOrTimeDisplay} from './date'
-
+import IssueListItem from './issueListItem'
 
 function CommentCount({count}) {
     return (<span className={classNames({'text-muted': count === 0})}>
@@ -126,6 +125,10 @@ class IssueListUI extends React.Component {
                 </td>
               </tr>);
         });
+
+        rows = issues.map((issue, index) => {
+            return <IssueListItem key={issue.id} issue={issue} selectIssue={this.props.handleIssueChange}/>
+        })
         return (
           <div className="issue-list">
             {/*the filtering interface*/}
@@ -136,20 +139,7 @@ class IssueListUI extends React.Component {
             <ScrollContainer scrollKey='toucan-issue-list'>
             {/* the actual table of issues */}
             <div className="issue-list-body">
-                <table className="issues table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th>Issue</th>
-                        <th>Status</th>
-                        <th>Category</th>
-                        <th>Created</th>
-                        <th>Discussion</th>
-                    </tr>
-                </thead>
-                <tbody>
                     {rows}
-                </tbody>
-                </table>
             </div>
             </ScrollContainer>
 

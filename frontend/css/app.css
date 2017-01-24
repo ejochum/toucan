@@ -86,6 +86,28 @@ main {
     padding: 1em;
 }
 
+.issue-list-body .issue-list-item:hover {
+    background-color: #ecf0f1;
+}
+
+.issue-list-body .issue-list-item {
+    width: 100%;
+    cursor: pointer;
+}
+
+/*the issue title*/
+.issue-list-body .issue-list-item h3 {
+    display: block;
+    text-overflow: ellipsis;
+}
+
+.issue-list-body .issue-list-item ul.issue-types {
+    list-style: none;
+}
+
+.issue-list-body .issue-list-item ul.issue-types li {
+    display: inline;
+}
 
 /*Issue detail page*/
 .issue-detail {
